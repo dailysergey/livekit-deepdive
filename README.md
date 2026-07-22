@@ -1,0 +1,8 @@
+uv init livekit-agent --bare
+
+uv add \
+"livekit-agents [silero, turn-detector]~=1.3" \
+"livekit-plugins-noise-cancellation~=0.2" \
+"python-dotenv"
+
+# livekit-deepdive
