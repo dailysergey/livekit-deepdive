@@ -22,16 +22,11 @@ materials/     исходные материалы курса
 
 ```bash
 uv sync
-uv run agent.py download-files   # один раз — модели VAD и turn-detector
+cp .env.example .env              # заполнить LIVEKIT_* (обязательно)
+uv run agent.py download-files    # один раз — модели VAD и turn-detector
 ```
 
-`.env` должен содержать как минимум:
-
-```
-LIVEKIT_URL=wss://your-project.livekit.cloud
-LIVEKIT_API_KEY=...
-LIVEKIT_API_SECRET=...
-```
+Полный список переменных и что для чего нужно — в [`.env.example`](.env.example). Для stage 1/2 достаточно `LIVEKIT_URL`/`LIVEKIT_API_KEY`/`LIVEKIT_API_SECRET`; `OPENROUTER_API_KEY` нужен только для stage 3, `LANGFUSE_*` — только если включаете трейсинг (см. ниже).
 
 ## Три этапа тестирования
 
