@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LiveKit Voice Agents · Study Guide · Proback ML</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --background:#ffffff; --foreground:#0a0a0a; --card:#ffffff;
+  --primary:#e6aa74; --accent-fg:#bf6f28;
+  --secondary:#f5f5f5; --muted:#f5f5f5; --muted-foreground:#737373;
+  --destructive:#dc2626; --border:#e5e5e5; --radius:0.5rem;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--background);color:var(--foreground);
+  font-family:'Inter',system-ui,sans-serif;line-height:1.55;
+  -webkit-font-smoothing:antialiased;padding:48px 24px 80px}
+.wrap{max-width:1180px;margin:0 auto}
+.mono{font-family:'JetBrains Mono',monospace}
+
+header{border-bottom:1px solid var(--border);padding-bottom:28px;margin-bottom:36px}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--accent-fg);margin-bottom:14px}
+h1{font-family:'Fraunces',serif;font-weight:500;font-size:40px;line-height:1.08;
+  letter-spacing:-.01em;margin-bottom:18px}
+h1 .accent{color:var(--accent-fg)}
+.meta-grid{display:flex;flex-wrap:wrap;gap:8px 28px;font-family:'JetBrains Mono',monospace;
+  font-size:12.5px;color:var(--muted-foreground)}
+.meta-grid b{color:var(--foreground);font-weight:500}
+.lead{margin-top:20px;font-size:16px;color:#262626;max-width:900px;line-height:1.6}
+
+section{margin-top:48px;scroll-margin-top:24px}
+h2{font-family:'Fraunces',serif;font-weight:500;font-size:26px;margin-bottom:6px;
+  display:flex;align-items:baseline;gap:12px}
+h2 .num{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--primary);font-weight:600}
+h3{font-family:'Fraunces',serif;font-weight:500;font-size:18px;margin:20px 0 8px;color:#262626}
+h4{font-family:'JetBrains Mono',monospace;font-size:11.5px;font-weight:600;letter-spacing:.05em;
+  text-transform:uppercase;color:var(--accent-fg);margin:18px 0 8px}
+.sub{color:var(--muted-foreground);font-size:14px;margin-bottom:22px;max-width:820px}
+p{font-size:14px;line-height:1.65;max-width:900px;margin-bottom:12px}
+ul{margin:8px 0 12px 22px;font-size:14px;line-height:1.7}
+ul li{margin-bottom:4px}
+
+.tldr{background:#fdf8f2;border-left:3px solid var(--accent-fg);border-radius:var(--radius);
+  padding:22px 28px;margin:16px 0}
+.tldr h3{color:var(--accent-fg);margin-top:0;font-size:16px}
+.tldr p{font-size:14px;color:#5c4a36;margin-bottom:8px;max-width:none}
+.tldr p:last-child{margin-bottom:0}
+
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px;margin-top:14px}
+.stat{background:var(--secondary);border-radius:var(--radius);padding:16px 18px}
+.stat .big{font-family:'Fraunces',serif;font-size:26px;font-weight:500;color:var(--accent-fg)}
+.stat .lbl{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted-foreground);
+  text-transform:uppercase;letter-spacing:.05em;margin-top:4px}
+
+table{border-collapse:collapse;width:100%;margin:12px 0 16px;font-size:13.5px}
+table th, table td{border:1px solid var(--border);padding:8px 12px;text-align:left;vertical-align:top}
+table th{background:var(--secondary);font-weight:600;font-family:'JetBrains Mono',monospace;
+  font-size:11.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted-foreground)}
+table td.h{background:#fbf7f1;font-weight:500;white-space:nowrap}
+
+pre{background:#0f172a;color:#e2e8f0;border-radius:var(--radius);padding:16px 20px;
+  font-family:'JetBrains Mono',monospace;font-size:12.5px;line-height:1.55;
+  overflow-x:auto;margin:10px 0 16px}
+pre code{color:inherit;background:none;padding:0;font-size:inherit}
+code{font-family:'JetBrains Mono',monospace;font-size:12.5px;background:var(--secondary);
+  padding:1px 6px;border-radius:4px;color:var(--accent-fg)}
+
+.toc{background:var(--secondary);border-radius:var(--radius);padding:20px 24px;margin-bottom:24px}
+.toc h3{margin-top:0;font-size:15px}
+.toc ol{margin:8px 0 0 22px;font-size:14px}
+.toc a{color:var(--foreground);text-decoration:none;border-bottom:1px dashed var(--border)}
+.toc a:hover{color:var(--accent-fg);border-bottom-color:var(--accent-fg)}
+
+.callout{background:var(--secondary);border-radius:var(--radius);padding:18px 22px;margin:14px 0}
+.callout h3{margin-top:0;font-size:15px;color:var(--accent-fg)}
+.callout p{font-size:13.5px;margin-bottom:6px;max-width:none}
+
+.tag{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:10.5px;font-weight:600;
+  letter-spacing:.05em;padding:3px 9px;border-radius:5px;text-transform:uppercase;margin-right:6px}
+.tag.plus{background:#dcfce7;color:#15803d}
+.tag.warn{background:#fef3c7;color:#b45309}
+.tag.risk{background:#fee2e2;color:#b91c1c}
+.tag.note{background:#f5f5f5;color:#525252}
+
+footer{margin-top:64px;padding-top:24px;border-top:1px solid var(--border);
+  font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--muted-foreground)}
+footer a{color:var(--accent-fg);text-decoration:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">Proback ML · study guide · voice agents</div>
+  <h1>LiveKit Voice Agents — <span class="accent">production-ready за час</span></h1>
+  <div class="meta-grid">
+    <span>Источник: <b>worksh.app/tutorials/livekit-voice-agent</b></span>
+    <span>Дата разбора: <b>20.07.2026</b></span>
+    <span>Уроков: <b>7</b></span>
+    <span>Стек: <b>Python 3.10+ · livekit-agents 1.3</b></span>
+  </div>
+  <p class="lead">
+    Конспект годного воркшопа по LiveKit Agents SDK: как за час собрать голосовой AI-агент, который не рубит клиента на полуслове, умеет откатываться на резервного провайдера, вызывает MCP-инструменты и корректно эскалирует на человека. Разложено по всем семи урокам с ключевыми абстракциями, минимальными кодовыми примерами и цифрами latency. Полезно тем, кто делает голосовые сценарии для контакт-центров и IVR-ботов, или собирает голосовой frontend поверх текстового агента.
+  </p>
+</header>
+
+<div class="tldr">
+  <h3>TL;DR</h3>
+  <p><b>Пайплайн:</b> Voice Activity Detection → STT → LLM → TTS. LiveKit SDK даёт готовый оркестратор всех четырёх плюс WebRTC-транспорт, semantic turn detection, fallback между провайдерами, метрики и MCP-инструменты.</p>
+  <p><b>Целевая задержка (TTFA):</b> ≤1000 мс. Складывается из VAD 15–30 мс + STT 200–600 мс + LLM 100–1000 мс + TTS 100–300 мс. Preemptive generation срезает 100–300 мс.</p>
+  <p><b>Ключевые фичи для контакт-центров:</b> multilingual semantic turn detection (~20 мс, ловит незаконченные фразы), FallbackAdapter (auto-retry по цепочке провайдеров), MCP-серверы (внутренние сервисы можно прицепить без переписки), consent-задача с булевым исходом, эскалация к менеджеру / человеку по SIP.</p>
+  <p><b>Слабое место:</b> preemptive generation ломает medical/legal/financial сценарии (модель начинает отвечать до полного ввода). Для compliance-чувствительных задач — не включать.</p>
+</div>
+
+<div class="stats">
+  <div class="stat"><div class="big">7</div><div class="lbl">уроков в курсе</div></div>
+  <div class="stat"><div class="big">~1 ч</div><div class="lbl">на прохождение</div></div>
+  <div class="stat"><div class="big">4</div><div class="lbl">стадии пайплайна</div></div>
+  <div class="stat"><div class="big">≤500 мс</div><div class="lbl">естественная беседа</div></div>
+  <div class="stat"><div class="big">~20 мс</div><div class="lbl">semantic turn overhead</div></div>
+  <div class="stat"><div class="big">Python 3.10+</div><div class="lbl">требование</div></div>
+</div>
+
+<div class="toc">
+  <h3>Содержание</h3>
+  <ol>
+    <li><a href="#l1">Introduction — почему сейчас можно строить голосовых агентов без audio-инженера</a></li>
+    <li><a href="#l2">Foundations — пайплайн VAD/STT/LLM/TTS и первый рабочий agent.py</a></li>
+    <li><a href="#l3">Semantic turn detection — как перестать рубить клиента на паузах</a></li>
+    <li><a href="#l4">Personality &amp; Fallbacks — тюн голоса и цепочки резервных провайдеров</a></li>
+    <li><a href="#l5">Metrics, Deployment, Latency — TTFA, preemptive, LiveKit Cloud</a></li>
+    <li><a href="#l6">Tools &amp; MCP — @function_tool и внешние MCP-серверы</a></li>
+    <li><a href="#l7">Consent &amp; Escalations — согласие на запись, передача менеджеру, SIP на человека</a></li>
+  </ol>
+</div>
+
+<section id="l1">
+  <h2><span class="num">01</span> Introduction — production-ready voice agents</h2>
+  <p class="sub">Setting the stage: почему голосовые агенты стало можно строить без audio-инженера.</p>
+
+  <h4>Что изменилось за год</h4>
+  <p>Год назад собрать голосовой агент = месяцы работы + специализированный audio-engineering бэкграунд. Сегодня — «working agent за несколько минут». Что упало в цене:</p>
+  <ul>
+    <li>STT — быстрее и точнее (реалтайм с приемлемой WER для русского)</li>
+    <li>LLM — вытягивают нюансы диалога, а не только Q&amp;A</li>
+    <li>TTS — звучит по-человечески, без «robotic voice»</li>
+    <li>LiveKit — абстрагирует WebRTC/оркестрацию, разработчик пишет только agent-логику</li>
+  </ul>
+
+  <h4>Что решают конкретно</h4>
+  <p>Два боли, которые убивали UX голосовых ботов:</p>
+  <ul>
+    <li><b>Robotic feel</b> — VAD на порогах громкости даёт rigid turn-taking</li>
+    <li><b>«Cut you off»</b> — агент отвечает на первой же паузе, до окончания мысли клиента</li>
+  </ul>
+
+  <div class="callout">
+    <h3>Практическое применение</h3>
+    <p>Голосовые боты и copilot'ы для контакт-центров — прямой оверлеп с LiveKit. Ключевой вопрос — можно ли получить STT/TTS с русским качества, сопоставимого с AssemblyAI/Cartesia. По TTS кандидаты: Yandex SpeechKit, VseGPT, ElevenLabs Multilingual v2. По STT: Yandex, Deepgram Nova-2 (русский появился), собственный Whisper large-v3-turbo.</p>
+  </div>
+</section>
+
+<section id="l2">
+  <h2><span class="num">02</span> Foundations — пайплайн и первый agent.py</h2>
+  <p class="sub">Understanding the real-time voice AI pipeline. Здесь ставится минимальный работающий агент.</p>
+
+  <h4>Компоненты пайплайна</h4>
+  <table>
+    <thead><tr><th>Стадия</th><th>Что делает</th><th>Best-case</th><th>Typical</th></tr></thead>
+    <tbody>
+      <tr><td class="h">VAD</td><td>Определяет, что человек говорит (не тратит цикл на тишину)</td><td>15–20 мс</td><td>20–30 мс</td></tr>
+      <tr><td class="h">STT</td><td>Транскрипция голоса в токены для LLM</td><td>200–300 мс</td><td>400–600 мс</td></tr>
+      <tr><td class="h">LLM</td><td>Генерация ответа (планирование, tool calls)</td><td>100–200 мс</td><td>500–1000 мс</td></tr>
+      <tr><td class="h">TTS</td><td>Синтез голоса из ответа LLM</td><td>100–150 мс</td><td>200–300 мс</td></tr>
+      <tr><td class="h" style="background:#fbf1e5">Total TTFA</td><td>Time to First Audio — от «клиент замолчал» до «первого слова агента»</td><td><b>~415 мс</b></td><td><b>1.1–2 с</b></td></tr>
+    </tbody>
+  </table>
+  <p><b>Estimation:</b> «естественная» беседа — TTFA под 500 мс. Всё что выше секунды — уже ощущается как «тормозит».</p>
+
+  <h4>Почему WebRTC, а не HTTP/WS</h4>
+  <p>Голосовой real-time — это media-задача. HTTP и WebSocket на её роль не проектировались. Ключевая разница — <b>транспорт</b> и <b>что делаем при потере пакета</b>.</p>
+
+  <table>
+    <thead><tr><th>Свойство</th><th>HTTP / WebSocket</th><th>WebRTC</th></tr></thead>
+    <tbody>
+      <tr><td class="h">Транспорт</td><td>TCP</td><td>UDP (SRTP для media, DTLS/SCTP для data)</td></tr>
+      <tr><td class="h">Потеря пакета</td><td>Ретрансмит + head-of-line blocking (всё после потерянного встаёт в паузу до retry)</td><td>Пакет пропущен, следующий проигрывается сразу; PLC (Packet Loss Concealment) интерполирует пропуск</td></tr>
+      <tr><td class="h">Компрессия</td><td>Нет (raw PCM или свой формат, гоняется в сообщении)</td><td>Opus 6–510 кбит/с, встроенный VBR, оптимизирован под голос и музыку одновременно</td></tr>
+      <tr><td class="h">Тайминги</td><td>Application-level, сам следи за timestamps</td><td>RTP-заголовок в каждом пакете: sequence number + timestamp + SSRC источника</td></tr>
+      <tr><td class="h">Jitter buffer</td><td>Придётся писать сам</td><td>Встроен, адаптивный (обычно 20–200 мс)</td></tr>
+      <tr><td class="h">Bitrate</td><td>Фиксированный</td><td>ABR — снижается автоматически при плохой сети через REMB/TWCC feedback</td></tr>
+      <tr><td class="h">NAT-traversal</td><td>Только через TURN-relay</td><td>ICE (STUN → TURN fallback), обычно прямая p2p</td></tr>
+      <tr><td class="h">Echo cancellation</td><td>Отдельная задача</td><td>AEC/AGC/NS встроены в стек браузера / мобильного SDK</td></tr>
+    </tbody>
+  </table>
+
+  <h4>Head-of-line blocking — главный убийца TCP для голоса</h4>
+  <p>TCP гарантирует <b>порядок</b> и <b>доставку</b>. Пакет 42 потерялся — все пакеты 43+, уже пришедшие, лежат в буфере ОС и не отдаются приложению до тех пор, пока 42-й не повторно доедет. При потере 1% на мобильной сети это добавляет ~150–500 мс к задержке. Клиент слышит: агент говорит нормально, потом на секунду замолкает, потом «догоняет».</p>
+  <p>UDP отдаёт что пришло, в любом порядке. WebRTC поверх этого:</p>
+  <ul>
+    <li>Пакет 42 пропал → PLC синтезирует ~20 мс правдоподобной паузы/интерполяции</li>
+    <li>Пакет 43 играется в свою слот-позицию</li>
+    <li>Слушатель слышит «щёлк» вместо «замолк на секунду»</li>
+  </ul>
+
+  <h4>Opus — почему именно этот кодек</h4>
+  <p>Voice-агент выигрывает от Opus по нескольким пунктам:</p>
+  <ul>
+    <li><b>Битрейт 6–510 кбит/с</b> плавно подстраивается: на 4G голос идёт в ~24 кбит/с, на wifi может подняться до 64 кбит/с для музыкального качества (актуально для стриминга TTS с эмоциональной интонацией).</li>
+    <li><b>Frame size 2.5–60 мс</b> — LiveKit обычно 20 мс. Чем меньше frame, тем ниже добавочная latency (но больше overhead-байтов на пакет).</li>
+    <li><b>FEC (Forward Error Correction)</b> — в каждом пакете спрятана «тень» предыдущего. При потере 1–2 пакетов подряд декодер восстанавливает без искажений.</li>
+    <li><b>Hybrid SILK/CELT</b> — переключается между речевым (SILK, узкополосный) и музыкальным (CELT, полнополосный) режимами в реальном времени. Для TTS с интонацией и фоновой музыкой (jingle) важно.</li>
+    <li><b>Роялти-free</b>, поддержка везде (Chrome, Safari, iOS, Android, все SIP-шлюзы), стандарт IETF (RFC 6716).</li>
+  </ul>
+
+  <h4>Per-packet timestamps &amp; jitter buffer</h4>
+  <p>В сети пакеты приходят с переменной задержкой: пакет N+1 может опередить N. Без выравнивания получится «квакающий» звук.</p>
+  <p>RTP-header в каждом Opus-пакете содержит:</p>
+  <ul>
+    <li><b>sequence number</b> — увеличивается на 1 каждый пакет; позволяет обнаружить пропуск и переупорядочить</li>
+    <li><b>timestamp</b> — момент когда сэмпл был захвачен на источнике (не когда отправлен); позволяет восстановить original timing</li>
+    <li><b>SSRC</b> — идентификатор источника (важно для конференций, когда участников много)</li>
+  </ul>
+  <p>Jitter buffer на приёме:</p>
+  <ul>
+    <li>Накапливает пакеты 20–200 мс (адаптивно к нестабильности сети)</li>
+    <li>Пересобирает по sequence number в правильный порядок</li>
+    <li>Отдаёт декодеру ровным потоком, «замедляя» пакеты которые пришли слишком быстро и «дожидаясь» отстающих</li>
+    <li>Балансирует: маленький buffer = меньше latency, но больше глюков; большой = гладко, но клиент чувствует «задержку»</li>
+  </ul>
+
+  <h4>Adaptive Bitrate (ABR) через REMB / TWCC</h4>
+  <p>Сеть меняется в течение звонка: клиент вышел из метро, зашёл в лифт, переключился с wifi на 4G. WebRTC мониторит packet loss + RTT и на лету пересобирает bitrate:</p>
+  <ul>
+    <li>Приёмник шлёт отправителю RTCP-feedback (REMB — Receiver Estimated Maximum Bitrate; или новее TWCC — Transport-Wide Congestion Control)</li>
+    <li>Отправитель на основе этого снижает bitrate Opus'а — с 32 кбит/с падает до 12, звук становится «телефонным», но не пропадает</li>
+    <li>Сеть восстановилась → bitrate обратно ползёт вверх, качество возвращается</li>
+  </ul>
+  <p>HTTP/WS так не умеет. Если TCP-connection упёрся в congestion window, приложение узнаёт об этом только когда retransmit-таймер выстрелит — уже поздно.</p>
+
+  <h4>NAT-traversal (ICE / STUN / TURN)</h4>
+  <p>Voice-звонок из мобильного приложения → сервер. Мобильный телефон за NAT провайдера, наш сервер тоже часто за корпоративным NAT. Как соединиться:</p>
+  <ul>
+    <li><b>STUN</b> — «эй сервер, скажи какой у меня внешний IP:port». Клиент+сервер узнают адреса друг друга и пробуют прямой UDP-flow. Работает в ~80% случаев.</li>
+    <li><b>TURN</b> — если прямая связь не пробивается (симметричный NAT корпоративного файрвола), пускаем через relay-сервер. Дороже (весь трафик через нас), но всегда работает.</li>
+    <li><b>ICE</b> — механизм который пробует STUN, TURN, host candidates в правильном порядке и выбирает лучший.</li>
+  </ul>
+  <p>LiveKit Cloud даёт ICE-инфру из коробки; для self-hosted нужен свой TURN (coturn), обычно на публичном IP-е.</p>
+
+  <div class="callout">
+    <h3>Что это значит на практике</h3>
+    <p><b>Контакт-центр на мобильных клиентах</b> — типичный кейс где HTTP/WS ломается. Плохая сота, метро, лифт, переход между wifi и LTE — пакеты теряются в кластерах, retransmit copolition убивает latency. WebRTC вытягивает где HTTP-based решение (типа наивного «WebSocket + Opus-сэмплы» без jitter buffer) сдаётся.</p>
+    <p><b>Что нельзя делать наивно:</b> цеплять voice-агент через собственный WebSocket из FastAPI и стримить туда PCM. Придётся написать jitter buffer, PLC, FEC, ABR — всё то что WebRTC уже отдаёт бесплатно.</p>
+    <p><b>Self-hosted в регулируемом контуре:</b> LiveKit Server ставится в закрытый контур (например, банковский), TURN на публичном IP через DMZ. Данные (audio + transcripts) наружу не уходят, шифрование SRTP на транспорте + DTLS для handshake.</p>
+  </div>
+
+  <h4>Минимальный agent.py</h4>
+  <p>Инициализация проекта через <code>uv</code>:</p>
+<pre>uv init livekit-voice-agent --bare
+cd livekit-voice-agent
+uv add \
+  "livekit-agents[silero,turn-detector]~=1.3" \
+  "livekit-plugins-noise-cancellation~=0.2" \
+  "python-dotenv"</pre>
+
+  <p><code>.env</code> с ключами LiveKit Cloud:</p>
+<pre>LIVEKIT_URL=wss://your-project.livekit.cloud
+LIVEKIT_API_KEY=your-api-key
+LIVEKIT_API_SECRET=your-api-secret</pre>
+
+  <p><code>agent.py</code> — базовая сборка агента с STT/LLM/TTS/VAD и background voice cancellation:</p>
+<pre>from dotenv import load_dotenv
+from livekit import agents
+from livekit.agents import Agent, AgentServer, AgentSession, JobContext, room_io
+from livekit.plugins import noise_cancellation, silero
+
+load_dotenv()
+
+class Assistant(Agent):
+    def __init__(self) -> None:
+        super().__init__(instructions="You are a helpful voice AI assistant.")
+
+server = AgentServer()
+
+@server.rtc_session()
+async def entrypoint(ctx: JobContext):
+    session = AgentSession(
+        stt="assemblyai/universal-streaming:en",
+        llm="openai/gpt-4.1-mini",
+        tts="cartesia/sonic-3",
+        vad=silero.VAD.load(),
+    )
+    await session.start(
+        agent=Assistant(),
+        room=ctx.room,
+        room_options=room_io.RoomOptions(
+            audio_input=room_io.AudioInputOptions(
+                noise_cancellation=noise_cancellation.BVC(),
+            ),
+        ),
+    )
+
+if __name__ == "__main__":
+    agents.cli.run_app(server)</pre>
+  <p>Запуск локально в консоли:</p>
+<pre>uv run agent.py download-files
+uv run agent.py console</pre>
+</section>
+
+<section id="l3">
+  <h2><span class="num">03</span> Semantic turn detection</h2>
+  <p class="sub">Preventing awkward interruptions. Ключевая фича LiveKit, которая отличает production-ready от «MVP на VAD».</p>
+
+  <h4>Проблема</h4>
+  <p>VAD триггерит по звуку. Клиент задумался в середине фразы — VAD решает «тишина, значит очередь ответа». Агент перебивает. Semantic turn detector решает по <b>смыслу</b>: «предложение закончено грамматически» — можно отвечать; «нет глагола / есть незавершённая интонация» — ждём.</p>
+
+  <h4>Механика</h4>
+  <ul>
+    <li>Отдельная multilingual модель, идёт в поставке SDK</li>
+    <li>Работает поверх VAD, не заменяет его</li>
+    <li>Латентность ~20 мс — «negligible impact»</li>
+    <li>Учитывает pause-паттерны разных языков (в русском своя pausa после «ну», «типа»)</li>
+  </ul>
+
+  <h4>Как включить</h4>
+<pre>from livekit.plugins.turn_detector.multilingual import MultilingualModel
+
+session = AgentSession(
+    stt="assemblyai/universal-streaming:en",
+    llm="openai/gpt-4.1-mini",
+    tts="cartesia/sonic-3",
+    vad=silero.VAD.load(),
+    turn_detection=MultilingualModel(),   # ← добавили строку
+)</pre>
+  <p>Установка: <code>uv add "livekit-agents[turn-detector]"</code></p>
+
+  <div class="callout">
+    <h3>Trade-off</h3>
+    <p>Без semantic turn detection получаем два бага: агент перебивает и STT-точность падает (модель дообрабатывает уже начатую генерацию). Стоимость включения — 20 мс к TTFA. Стоит всегда.</p>
+  </div>
+</section>
+
+<section id="l4">
+  <h2><span class="num">04</span> Personality &amp; Fallbacks</h2>
+  <p class="sub">Designing resilient assistant behavior. Как научить агента говорить по-своему и переживать падения провайдеров.</p>
+
+  <h4>Personality через instructions</h4>
+  <p>Голосовой prompt ≠ текстовому. Правила:</p>
+  <ul>
+    <li><b>Короткие фразы, мало скобок</b> — звучит естественнее</li>
+    <li><b>≤3 предложения в ответе</b> — иначе latency и потеря внимания</li>
+    <li><b>Диалект/идиомы явно</b> — UK vs US, RU vs bilingual</li>
+    <li><b>Stage directions</b> в system prompt — управлять эмоцией через «say this with mild sarcasm»</li>
+  </ul>
+<pre>class Assistant(Agent):
+    def __init__(self) -> None:
+        super().__init__(
+            instructions=(
+                "You are an upbeat, slightly sarcastic voice AI for tech support. "
+                "Help the caller fix issues without rambling, "
+                "and keep replies under 3 sentences."
+            ),
+        )</pre>
+
+  <h4>FallbackAdapter</h4>
+  <p>Каждая стадия пайплайна оборачивается в цепочку провайдеров с приоритетом. Основной падает — auto-retry на следующего без разрыва сессии.</p>
+<pre>session = AgentSession(
+    llm=llm.FallbackAdapter([
+        inference.LLM(model="openai/gpt-4.1-mini"),
+        inference.LLM(model="google/gemini-2.5-flash"),
+    ]),
+    stt=stt.FallbackAdapter([
+        inference.STT.from_model_string("assemblyai/universal-streaming:en"),
+        inference.STT.from_model_string("deepgram/nova-3"),
+    ]),
+    tts=tts.FallbackAdapter([
+        inference.TTS.from_model_string("cartesia/sonic-3:9626c31c-bec5-4cca-baa8-f8ba9e84c8bc"),
+        inference.TTS.from_model_string("inworld/inworld-tts-1"),
+    ]),
+    vad=vad,
+    turn_detection=MultilingualModel(),
+)</pre>
+  <p><b>Тест fallback:</b> подсунуть невалидное имя модели primary → в консоли увидеть цепочку попыток и переход на secondary.</p>
+
+  <div class="callout">
+    <h3>Дырка в документации</h3>
+    <p>LiveKit не публикует <b>timeouts / retry counts</b> для FallbackAdapter — «auto-retry in priority order» и всё. Для прод-контура с жёсткими SLA придётся смотреть код или задавать явно через кастомные политики. Отдельный TODO при внедрении.</p>
+  </div>
+</section>
+
+<section id="l5">
+  <h2><span class="num">05</span> Metrics, Deployment, Latency Optimization</h2>
+  <p class="sub">Measuring performance and deploying to production. Что мерять, куда деплоить, чем разгонять.</p>
+
+  <h4>Ключевые метрики</h4>
+  <ul>
+    <li><b>TTFA (Time to First Audio)</b> — от окончания реплики клиента до первого слова агента. Целевое ≤1000 мс.</li>
+    <li><b>TTFT (Time to First Token)</b> — задержка LLM. Изолирует, что тормозит: STT, модель или синтез.</li>
+    <li><b>Token usage</b> — стоимость сессии.</li>
+    <li><b>Interruption rate</b> — как часто клиент перебивает агента (сигнал, что агент болтливый).</li>
+    <li><b>Fallback activations</b> — как часто primary провайдер валится.</li>
+  </ul>
+
+  <h4>Сбор метрик</h4>
+<pre>from livekit.agents import AgentStateChangedEvent, MetricsCollectedEvent, metrics
+import logging, time
+
+logger = logging.getLogger(__name__)
+
+# внутри entrypoint, до session.start(...)
+usage_collector = metrics.UsageCollector()
+last_eou_metrics: metrics.EOUMetrics | None = None
+
+@session.on("metrics_collected")
+def _on_metrics_collected(ev: MetricsCollectedEvent):
+    nonlocal last_eou_metrics
+    if ev.metrics.type == "eou_metrics":
+        last_eou_metrics = ev.metrics
+    metrics.log_metrics(ev.metrics)
+    usage_collector.collect(ev.metrics)
+
+async def log_usage():
+    summary = usage_collector.get_summary()
+    logger.info("Usage summary: %s", summary)
+
+ctx.add_shutdown_callback(log_usage)
+
+@session.on("agent_state_changed")
+def _on_agent_state_changed(ev: AgentStateChangedEvent):
+    if ev.new_state == "speaking":
+        if last_eou_metrics:
+            elapsed = time.time() - last_eou_metrics.timestamp
+            logger.info(f"Time to first audio: {elapsed:.3f}s")</pre>
+  <p>Жизненный цикл агента: <code>listening → thinking → speaking</code>. Метрики эмиттятся после каждой стадии.</p>
+
+  <h4>Preemptive generation</h4>
+  <p>Флаг, при котором LLM начинает генерировать ответ <b>до</b> окончания реплики клиента, но <b>говорить</b> начинает только после semantic turn end. Экономит 100–300 мс.</p>
+<pre>session = AgentSession(
+    # ... остальной конфиг ...
+    preemptive_generation=True,
+)</pre>
+
+  <div class="callout">
+    <h3>Когда НЕ включать preemptive</h3>
+    <p>Клиент может «переиграть» середину фразы. Модель уже сгенерировала ответ на первую часть — получаем ответ на неполный запрос. Категорически нельзя для medical / legal / financial и любых других compliance-чувствительных сценариев. Ок для tech-support-чата и всего conversational.</p>
+  </div>
+
+  <h4>Общие правила разгона</h4>
+  <ul>
+    <li><b>Стримить всё:</b> STT/LLM/TTS работают инкрементально, не батчами</li>
+    <li><b>Параллелить:</b> TTS начинается на первых токенах LLM, а не после полного ответа</li>
+    <li><b>Async tool calls с bounded timeouts</b> — блокирующие I/O выкидываем</li>
+    <li><b>Prompt tightness</b> — короче prompt = быстрее TTFT и дешевле</li>
+  </ul>
+
+  <h4>Пример trace-разбивки</h4>
+  <table>
+    <thead><tr><th>Span</th><th>Duration</th></tr></thead>
+    <tbody>
+      <tr><td class="h">STT</td><td>180 мс</td></tr>
+      <tr><td class="h">LLM (TTFT)</td><td>320 мс</td></tr>
+      <tr><td class="h">TTS</td><td>150 мс</td></tr>
+      <tr><td class="h" style="background:#fbf1e5"><b>Total TTFA</b></td><td><b>~650 мс</b></td></tr>
+    </tbody>
+  </table>
+
+  <h4>Деплой в LiveKit Cloud</h4>
+<pre># macOS
+brew install livekit-cli
+# Linux
+curl -sSL https://get.livekit.io/cli | bash
+# Windows
+winget install LiveKit.LiveKitCLI
+
+lk cloud auth              # OAuth через браузер
+lk project set-default
+lk agent create            # сам билдит Dockerfile, деплоит, стримит логи</pre>
+  <p><b>Observability</b> включается на уровне проекта (project settings → Data and privacy → «Agent observability»). Требует SDK ≥1.3.0 (Python) / ≥1.0.18 (Node). Все сессии автоматически пишутся, каждая: audio + transcripts + traces + logs.</p>
+  <p>Хранение — 30 дней в US, потом auto-delete. Отключается на конкретной сессии:</p>
+<pre>await session.start(record=False)   # ни аудио, ни транскриптов не сохраняется</pre>
+</section>
+
+<section id="l6">
+  <h2><span class="num">06</span> Tools &amp; MCP Integration</h2>
+  <p class="sub">Connecting external systems safely. Как приделать агенту guarded-инструменты и внешние MCP-серверы.</p>
+
+  <h4>@function_tool</h4>
+  <p>Декоратор регистрирует Python-функцию как tool, доступный LLM. Ключевое: <b>docstring становится description для LLM</b>. Тип-хинты параметров — контракт входов.</p>
+<pre>import httpx
+from livekit.agents import function_tool, RunContext, ToolError
+
+class Assistant(Agent):
+    @function_tool()
+    async def lookup_weather(
+        self,
+        context: RunContext,
+        location: str,
+    ) -> dict:
+        """Look up current weather for a location.
+
+        Args:
+            location: City name or location to get weather for.
+        """
+        async with httpx.AsyncClient() as client:
+            geo = (await client.get(
+                "https://geocoding-api.open-meteo.com/v1/search",
+                params={"name": location, "count": 1}
+            )).json()
+            if not geo.get("results"):
+                raise ToolError(f"Could not find location: {location}")
+            lat, lon = geo["results"][0]["latitude"], geo["results"][0]["longitude"]
+            weather = (await client.get(
+                "https://api.open-meteo.com/v1/forecast",
+                params={"latitude": lat, "longitude": lon,
+                        "current": "temperature_2m,weather_code",
+                        "temperature_unit": "fahrenheit"}
+            )).json()
+            return {
+                "location": geo["results"][0]["name"],
+                "temperature_f": weather["current"]["temperature_2m"],
+                "conditions": weather["current"]["weather_code"],
+            }</pre>
+
+  <h4>MCP-серверы напрямую</h4>
+  <p>MCP цепляются в <code>AgentSession</code> — при старте SDK тянет список инструментов и регистрирует наряду с local <code>@function_tool</code>. Пример подключения официального LiveKit-docs MCP:</p>
+<pre>from livekit.agents import mcp
+
+session = AgentSession(
+    mcp_servers=[
+        mcp.MCPServerHTTP(url="https://docs.livekit.io/mcp")
+    ],
+    # ... остальное ...
+)</pre>
+  <p>Установка: <code>uv add "livekit-agents[mcp]"</code>. <b>На практике:</b> сюда логично цеплять внутренние текстовые сервисы компании через один общий MCP-роутер (типа mcp-proxy, sparfenyuk) — тогда voice-агент получает доступ к ним без переписи.</p>
+
+  <h4>Безопасность в voice-контексте</h4>
+  <ul>
+    <li><b>Долгие операции</b> — <code>context.session.say("Одну секунду, ищу…")</code> перед вызовом, чтобы клиент не думал что бот завис</li>
+    <li><b>Необратимые действия</b> — <code>context.disallow_interruptions()</code> в начале tool-а (отправка заказа, списание, эскалация)</li>
+    <li><b>Ошибки</b> — <code>raise ToolError(...)</code>, LLM сам сформулирует пояснение</li>
+    <li><b>SLA на tool</b> — держать под 2 секунды, иначе клиент бросит трубку</li>
+  </ul>
+</section>
+
+<section id="l7">
+  <h2><span class="num">07</span> Consent &amp; Escalations</h2>
+  <p class="sub">Operational workflows for real deployments. Согласие на запись, передача к менеджеру, SIP на живого оператора.</p>
+
+  <h4>Consent-задача</h4>
+  <p>Отдельный подкласс <code>AgentTask[bool]</code> с двумя tool-ами: consent given / denied. Задача крутится, пока LLM не получит явное «да» или «нет».</p>
+<pre>class CollectConsent(AgentTask[bool]):
+    def __init__(self, chat_ctx=None):
+        super().__init__(
+            instructions="""
+            Ask for recording consent and get a clear yes or no answer.
+            Be polite and professional.
+            """,
+            chat_ctx=chat_ctx,
+        )
+
+    async def on_enter(self) -> None:
+        await self.session.generate_reply(instructions=(
+            "Briefly introduce yourself, then ask for permission to record "
+            "the call for quality assurance and training purposes. "
+            "Make it clear that they can decline."
+        ))
+
+    @function_tool()
+    async def consent_given(self) -> None:
+        """Use this when the user gives consent to record."""
+        self.complete(True)
+
+    @function_tool()
+    async def consent_denied(self) -> None:
+        """Use this when the user denies consent to record."""
+        self.complete(False)</pre>
+
+  <h4>Эскалация к менеджеру</h4>
+  <p>Отдельный класс <code>ManagerAgent</code> — другой голос, другие полномочия. Передача сохраняет контекст через <code>chat_ctx</code>.</p>
+<pre>@function_tool()
+async def escalate_to_manager(self, context: RunContext) -> ManagerAgent:
+    """Transfer the customer to a manager when requested
+    or when you cannot resolve their issue."""
+    return ManagerAgent(chat_ctx=self.chat_ctx), "Transferring you to a manager now."</pre>
+
+  <h4>Передача живому оператору по SIP</h4>
+<pre>@function_tool()
+async def transfer_to_human(self, context: RunContext) -> None:
+    """Transfer the call to a human agent."""
+    context.disallow_interruptions()
+    await context.session.say("I'm transferring you to a human agent now. Please hold.")
+    room = get_job_context().room
+    await room.local_participant.publish_sip_participant(
+        sip_trunk_id="your-trunk-id",
+        dial_to="sip:agent@example.com",
+    )</pre>
+
+  <h4>Рекомендованный prod-flow</h4>
+  <ol style="list-style:decimal;padding-left:24px;font-size:14px;line-height:1.75;max-width:820px">
+    <li><b>CollectConsent</b> → булев исход; если False, стартуем сессию с <code>record=False</code></li>
+    <li><b>Triage agent</b> → маршрутизация в specialty (тех.поддержка / биллинг / …)</li>
+    <li><b>Specialty agent</b> → работает по конкретному сценарию</li>
+    <li><b>Manager escalation</b> → если запрошено или не решается</li>
+    <li><b>Human handoff по SIP</b> → как последний рубеж</li>
+  </ol>
+  <p>На каждом переходе передавать <code>chat_ctx</code> — иначе новый агент задаёт клиенту те же вопросы заново, что бесит.</p>
+
+  <div class="callout">
+    <h3>Триггеры эскалации</h3>
+    <p>LLM решает вызывать <code>escalate_to_manager</code> из двух источников: <b>docstring tool-а</b> + <b>instructions агента</b>. Практика — прописывать в instructions явные примеры: «If the customer asks to speak with a human, if they say ‘this is ridiculous’, if you tried the same solution twice — escalate».</p>
+  </div>
+</section>
+
+<section id="proback">
+  <h2><span class="num">08</span> Практические выводы</h2>
+  <p class="sub">Punch-list из курса для команды, которая строит голосовые сценарии для контакт-центров.</p>
+
+  <table>
+    <thead><tr><th>Фича LiveKit</th><th>Практический кейс</th><th>Приоритет</th></tr></thead>
+    <tbody>
+      <tr>
+        <td class="h">Semantic turn detection (multilingual)</td>
+        <td><b>Voice-боты для контакт-центров</b> — сейчас многие рубят на паузах. Мультилингвальность важна для микса RU + бренд/техтермины.</td>
+        <td><span class="tag risk">высокий</span></td>
+      </tr>
+      <tr>
+        <td class="h">FallbackAdapter</td>
+        <td>Все voice-сервисы с SLA. Тем более под контур с жёсткими требованиями ИБ, где нужно «primary + backup + fallback» без собственного оркестратора.</td>
+        <td><span class="tag risk">высокий</span></td>
+      </tr>
+      <tr>
+        <td class="h">Preemptive generation</td>
+        <td>Только для «болтательных» сценариев. Для compliance-чувствительных сценариев — <b>запрещено</b>.</td>
+        <td><span class="tag warn">средний</span></td>
+      </tr>
+      <tr>
+        <td class="h">MCP-серверы в AgentSession</td>
+        <td>Внутренние текстовые сервисы компании — если уже MCP-совместимы (например, через <code>mcp-proxy</code>) — voice-frontend получает их из коробки.</td>
+        <td><span class="tag risk">высокий</span></td>
+      </tr>
+      <tr>
+        <td class="h">Consent task (recording)</td>
+        <td>Обязательно для банковских звонков (регуляторно, 152-ФЗ). Готовый паттерн — берём как есть.</td>
+        <td><span class="tag risk">высокий</span></td>
+      </tr>
+      <tr>
+        <td class="h">SIP-transfer на человека</td>
+        <td>Escalation-путь для роботов контакт-центра. Если в компании уже есть SIP-инфраструктура — здесь только цеплять trunk_id.</td>
+        <td><span class="tag warn">средний</span></td>
+      </tr>
+      <tr>
+        <td class="h">Metrics (TTFA / TTFT / usage_collector)</td>
+        <td>Основа для evaluator в voice-контексте, вписать в Langfuse через custom span/generation. См. внутренний гайд по трассировке в Langfuse.</td>
+        <td><span class="tag warn">средний</span></td>
+      </tr>
+      <tr>
+        <td class="h">LiveKit Cloud деплой</td>
+        <td>Для регулируемого контура <b>не подходит</b> (данные наружу). Для внутренних экспериментов — ок. Prod — self-hosted LiveKit Server.</td>
+        <td><span class="tag note">низкий</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h4>Что перепроверить перед пилотом</h4>
+  <ul>
+    <li><b>Русский STT/TTS</b> — AssemblyAI universal-streaming русский пока не потянет (или потянет с оговорками). Bench: Yandex SpeechKit + Deepgram Nova-2 + собственный Whisper large-v3-turbo на реальном корпусе колл-центра.</li>
+    <li><b>Русский semantic turn detection</b> — MultilingualModel заявлена, но качество на RU надо тестить на реальных сэмплах.</li>
+    <li><b>Fallback timeouts / retry counts</b> — не задокументированы, копать код или задавать явно в конфиге.</li>
+    <li><b>Self-hosted LiveKit Server</b> — для регулируемого контура обязательно; проверить лицензию, ресурсные требования, интеграцию с корпоративным auth (Keycloak/AD).</li>
+    <li><b>Хорошая практика:</b> любой POC — с baseline (Fitbit-VAD или простой RMS-VAD) + метрики TTFA/interruption_rate + commit hash.</li>
+  </ul>
+</section>
+
+<footer>
+  Proback ML · Study Guide · LiveKit Voice Agents · 20.07.2026 · Source: <a href="https://worksh.app/tutorials/livekit-voice-agent/introduction">worksh.app/tutorials/livekit-voice-agent</a>
+</footer>
+
+</div>
+</body>
+</html>
